@@ -1,2 +1,6 @@
 .venv
 downloads/*
+api_key.py
+output/*
+_pycache_
+*.pyc
