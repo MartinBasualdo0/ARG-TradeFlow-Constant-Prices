@@ -106,7 +106,7 @@ def plot_agregado_mensual(serie_historica_bc:pd.DataFrame, serie_cpi_usa:pd.Data
         hovermode="x unified",
         legend=dict(
             yanchor="top", orientation="h",
-            y=-.12,
+            y=-.05,
             xanchor="left",
             x=0.34
         ),
@@ -179,7 +179,7 @@ def plot_agregado_anual(serie_historica_bc:pd.DataFrame, serie_cpi_usa:pd.DataFr
         hovermode="x unified",
         legend=dict(
             yanchor="top", orientation="h",
-            y=-.12,
+            y=-.05,
             xanchor="left",
             x=0.34
         ),
