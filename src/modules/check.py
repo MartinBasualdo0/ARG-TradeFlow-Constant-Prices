@@ -13,7 +13,10 @@ def check_and_create_directories():
 # Function to check if api_key.py exists
 def check_api_key_file():
     if not os.path.exists("api_key.py"):
+        with open("api_key.py", "w") as api_key_file:
+            api_key_file.write("apiKey = \"\"")
         print("[bold red]WARNING: 'api_key.py' file is missing. Please create it with your API key.[/bold red]")
+        print("Enter https://fred.stlouisfed.org/docs/api/api_key.html")
         print("Feel free to read the README.md if you need help")
         exit(1)  # Exit the program with an error code
     else:
