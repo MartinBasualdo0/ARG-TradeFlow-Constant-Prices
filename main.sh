@@ -2,5 +2,5 @@
 
 source .venv/Scripts/activate
 
-python main.py
+python -u main.py
 read -p "Program ended, press enter to exit..."
