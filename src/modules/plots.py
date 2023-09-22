@@ -205,7 +205,7 @@ def genera_plots_inflacionados():
     serie_cpi_usa = fred.get_cpi_fred(apiKey)
     plot_agregado_anual(serie_historica_bc, serie_cpi_usa).write_html("output/serie_historica_acumulada_usd_constantes.html")
     plot_agregado_mensual(serie_historica_bc, serie_cpi_usa).write_html("output/serie_historica_mensual_usd_constantes.html")
-    get_balanza_comercial(serie_historica_bc, serie_cpi_usa, acumulado=False).to_excel("/output/serie_historica.xlsx")
+    get_balanza_comercial(serie_historica_bc, serie_cpi_usa, acumulado=False).to_excel("output/serie_historica.xlsx")
     output_dir = os.path.abspath("output")
     webbrowser.open(os.path.join(output_dir, "serie_historica_acumulada_usd_constantes.html"), new=2)
     webbrowser.open(os.path.join(output_dir, "serie_historica_mensual_usd_constantes.html"), new=2)
