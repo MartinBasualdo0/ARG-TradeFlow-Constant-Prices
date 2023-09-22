@@ -53,7 +53,7 @@ def get_ica_digital_href(driver, timeout:int = 10):
 
 def get_excels_from_ica_digital(driver, timeout:int=10):
     wait = WebDriverWait(driver, timeout)
-    expected_condition = EC.presence_of_all_elements_located((By.XPATH, "//a[@class]"))
+    expected_condition = EC.presence_of_all_elements_located((By.XPATH, '//*[@id="graficoSaldo"]/astro-island/div/div/div'))
     href_elements = wait.until(expected_condition)
     elements = driver.find_elements(By.XPATH, "//a[@class]")
     hrefs = [element.get_attribute('href') for element in elements]
