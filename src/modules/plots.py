@@ -129,7 +129,7 @@ def plot_agregado_anual(serie_historica_bc:pd.DataFrame, serie_cpi_usa:pd.DataFr
     x = balanza.index
     primer_anio = balanza.index[0]
     ultimo_anio = balanza.index[-1]
-    title_text = f"Serie histórica de la balanza comercial {primer_anio}-{ultimo_anio}. Acumulado hasta {DIC_MESES[int(ultimo_mes)]}<br><sup>A dólares constantes"
+    title_text = f"Serie histórica de la balanza comercial {primer_anio}-{ultimo_anio}.<br><sup> Acumulado hasta {DIC_MESES[int(ultimo_mes)]} de cada año, a dólares constantes"
     dtick = False
         
     fig = go.Figure()
