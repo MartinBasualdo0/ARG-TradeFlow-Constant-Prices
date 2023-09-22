@@ -6,6 +6,7 @@ import os
 import pandas as pd
 import plotly.graph_objects as go
 import locale
+import webbrowser
 from src.modules.dics_and_dates import presidencias, eventos_internacionales, eventos_relevantes, sequias, DIC_MESES
 locale.setlocale(locale.LC_ALL, 'es_ES')
 
@@ -204,7 +205,7 @@ def genera_plots_inflacionados():
     serie_cpi_usa = fred.get_cpi_fred(apiKey)
     plot_agregado_anual(serie_historica_bc, serie_cpi_usa).write_html("output/serie_historica_acumulada_usd_constantes.html")
     plot_agregado_mensual(serie_historica_bc, serie_cpi_usa).write_html("output/serie_historica_mensual_usd_constantes.html")
-    import webbrowser
+    get_balanza_comercial(serie_historica_bc, serie_cpi_usa, acumulado=False).to_excel("../output/serie_historica.xlsx")
     output_dir = os.path.abspath("output")
     webbrowser.open(os.path.join(output_dir, "serie_historica_acumulada_usd_constantes.html"), new=2)
     webbrowser.open(os.path.join(output_dir, "serie_historica_mensual_usd_constantes.html"), new=2)
