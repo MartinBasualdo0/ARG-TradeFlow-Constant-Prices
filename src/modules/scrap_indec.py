@@ -7,10 +7,16 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import os
 
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium import webdriver
+import os
+import time
+
+
 def inicio_driver(link:str):
     service = Service(ChromeDriverManager().install())
-    # carpeta_descarga=os.getcwd().replace('src','downloads')
-    carpeta_descarga=os.getcwd()+'\\downloads'
+    carpeta_descarga=os.getcwd()+"\downloads"
     prefs = {'download.default_directory' : carpeta_descarga,
         "directory_upgrade": True}
     chrome_options = webdriver.ChromeOptions()
@@ -19,22 +25,26 @@ def inicio_driver(link:str):
     driver.get(link)
     driver.maximize_window()
     return driver
-
-def every_downloads_chrome(driver):
-    '''
-    Verifica cuando terminan las descargas.
-    '''
-    # Ir a la página de descargas de Chrome
-    if not driver.current_url.startswith("chrome://downloads"):
-        driver.get("chrome://downloads/")
     
-    # Ejecutar script para obtener los items descargados
-    return driver.execute_script("""
-        var items = document.querySelector('downloads-manager')
-            .shadowRoot.getElementById('downloadsList').items;
-        if (items.every(e => e.state === "COMPLETE"))
-            return items.map(e => e.fileUrl || e.file_url);
-        """)
+def every_downloads_chrome():
+    '''Check if all downloads are complete'''
+    while True:
+        carpeta_descarga=os.getcwd()+"\downloads"
+        incomplete_downloads = [name for name in os.listdir(carpeta_descarga) if name.endswith('.tmp') or name.endswith('.crdownload')]
+        if not incomplete_downloads:
+            return True  # Return True when no more .crdownload files in the directory
+        time.sleep(1)  # Wait for 1 second before checking again
+
+def wait_for_downloads_to_complete(timeout:int):
+    '''Wait for all downloads to complete with a timeout'''
+    start_time = time.time()  # Save the start time
+
+    while not every_downloads_chrome():  # Wait until all downloads are complete
+        if time.time() - start_time > timeout:  # If the timeout has elapsed, break the loop
+            print('Timeout elapsed, stopping downloads')
+            break
+        time.sleep(1)  # Wait for 1 second before checking again
+            
     
     
 def get_ica_digital_href(driver, timeout:int = 10):
@@ -60,16 +70,19 @@ def get_excels_from_ica_digital(driver, timeout:int=10):
     excels = [excel for excel in hrefs if excel.endswith(".xlsx")]
     return excels
 
-def download_every_excel(driver,excels:list[str]):
-    for excel in excels:
-        driver.get(excel)
-    paths = WebDriverWait(driver, 300, 1).until(every_downloads_chrome)
+# def download_every_excel(driver,excels:list[str]):
+#     for excel in excels:
+#         driver.get(excel)
+#     paths = WebDriverWait(driver, 300, 1).until(every_downloads_chrome)
 
 def scrap_excels_index_ica_digital(timeout:int = 10):
     driver = inicio_driver("https://www.indec.gob.ar/indec/web/Nivel4-Tema-3-2-40")
     link_ica_digital = get_ica_digital_href(driver,timeout)
     driver.get(link_ica_digital)
     excels = get_excels_from_ica_digital(driver)
-    download_every_excel(driver, excels)
+    # download_every_excel(driver, excels)
+    for excel in excels:
+        driver.get(excel)
+    wait_for_downloads_to_complete(timeout=300)
     driver.quit()
     
